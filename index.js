@@ -225,7 +225,10 @@ function SpotifyWebHelper(opts) {
 			this.player.pause(true)
 			return
 		}
-		return new Promise((function (resolve, reject) {
+		if (!spotifyContextUri) {
+			spotifyContextUri = spotifyUri
+		}
+			return new Promise((function (resolve, reject) {
 			return getJSON({
 				url: this.generateSpotifyUrl("/remote/play.json"),
 				headers: ORIGIN_HEADER,
@@ -235,7 +238,7 @@ function SpotifyWebHelper(opts) {
 					oauth: this.oauthtoken,
 					csrf: this.csrftoken,
 					uri: spotifyUri,
-					context: if (!spotifyContextUri) { spotifyUri } else { spotifyContextUri }
+					context: spotifyContextUri
 				}
 			})
 			.then(function (res) {
