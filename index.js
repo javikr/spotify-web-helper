@@ -220,7 +220,7 @@ function SpotifyWebHelper(opts) {
 			})
 		}).bind(this))
 	}).bind(this)
-	this.player.play = (function (spotifyUri) {
+	this.player.play = (function (spotifyUri, spotifyContextUri) {
 		if (!spotifyUri || (this.status && this.status.track && this.status.track.track_resource && this.status.track.track_resource.uri == spotifyUri)) {
 			this.player.pause(true)
 			return
@@ -235,7 +235,7 @@ function SpotifyWebHelper(opts) {
 					oauth: this.oauthtoken,
 					csrf: this.csrftoken,
 					uri: spotifyUri,
-					context: spotifyUri
+					context: if (!spotifyContextUri) { spotifyUri } else { spotifyContextUri }
 				}
 			})
 			.then(function (res) {
